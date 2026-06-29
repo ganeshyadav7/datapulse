@@ -1,0 +1,27 @@
+services:
+  datapulse-api:
+    build: .
+    container_name: datapulse-api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/datapulse.db
+    volumes:
+      - datapulse_sqlite:/data
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: datapulse-postgres
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: datapulse
+      POSTGRES_USER: datapulse
+      POSTGRES_PASSWORD: datapulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  datapulse_sqlite:
+  postgres_data:

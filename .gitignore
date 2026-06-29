@@ -1,26 +1,17 @@
-# Virtual environments
-venv/
+.env
 .venv/
-
-# Python bytecode and caches
+venv/
 __pycache__/
-*.pyc
-*.pyo
-
-# Test, coverage, and type-check caches
+*.py[cod]
 .pytest_cache/
+.ruff_cache/
 .mypy_cache/
 .coverage
 htmlcov/
-
-# Local environment files
-.env
-
-# Editor and OS files
-.DS_Store
-.idea/
-.vscode/
-
-# Local databases
-*.sqlite3
 *.db
+*.sqlite
+*.sqlite3
+dist/
+build/
+*.egg-info/
+.DS_Store

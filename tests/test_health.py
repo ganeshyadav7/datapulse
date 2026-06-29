@@ -2,13 +2,8 @@
 
 from fastapi.testclient import TestClient
 
-from app.main import app
 
-
-client = TestClient(app)
-
-
-def test_root_health_endpoint() -> None:
+def test_root_health_endpoint(client: TestClient) -> None:
     """Root endpoint should report healthy status."""
     response = client.get("/")
 
@@ -16,10 +11,9 @@ def test_root_health_endpoint() -> None:
     assert response.json() == {"status": "ok"}
 
 
-def test_api_health_endpoint() -> None:
+def test_api_health_endpoint(client: TestClient) -> None:
     """Versioned health endpoint should report healthy status."""
     response = client.get("/api/v1/health")
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
-
