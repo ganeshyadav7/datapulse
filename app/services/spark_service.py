@@ -29,5 +29,6 @@ def summarize_spark(db: Session) -> SparkSummary:
         running_jobs=sum(job.status.lower() == "running" for job in jobs),
         total_input_records=sum(job.input_records for job in jobs),
         total_output_records=sum(job.output_records for job in jobs),
+        total_partitions=sum(job.partitions for job in jobs),
         average_duration_seconds=round(sum(durations) / len(durations), 2) if durations else 0.0,
     )

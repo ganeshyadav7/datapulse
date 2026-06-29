@@ -11,9 +11,7 @@ def create_airflow_dag_run(db: Session, payload: AirflowDagRunCreate) -> Airflow
     return create_dag_run(db, payload)
 
 
-def list_airflow_dag_runs(
-    db: Session, skip: int = 0, limit: int = 100
-) -> list[AirflowDagRun]:
+def list_airflow_dag_runs(db: Session, skip: int = 0, limit: int = 100) -> list[AirflowDagRun]:
     return list_dag_runs(db, skip=skip, limit=limit)
 
 
@@ -31,5 +29,6 @@ def summarize_airflow(db: Session) -> AirflowSummary:
         running_dag_runs=sum(run.status.lower() == "running" for run in dag_runs),
         sla_misses=sum(run.sla_miss for run in dag_runs),
         total_failed_tasks=sum(run.failed_tasks for run in dag_runs),
+        total_retries=sum(run.retry_count for run in dag_runs),
         average_duration_seconds=round(sum(durations) / len(durations), 2) if durations else 0.0,
     )

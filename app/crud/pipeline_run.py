@@ -16,7 +16,9 @@ def create_pipeline_run(db: Session, payload: PipelineRunCreate) -> PipelineRun:
 
 
 def list_pipeline_runs(db: Session, skip: int = 0, limit: int = 100) -> list[PipelineRun]:
-    statement = select(PipelineRun).order_by(PipelineRun.created_at.desc()).offset(skip).limit(limit)
+    statement = (
+        select(PipelineRun).order_by(PipelineRun.created_at.desc()).offset(skip).limit(limit)
+    )
     return list(db.scalars(statement).all())
 
 

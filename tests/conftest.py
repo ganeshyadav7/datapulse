@@ -8,10 +8,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app import models as _models  # noqa: F401
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
-from app import models as _models  # noqa: F401
 
 
 @pytest.fixture()

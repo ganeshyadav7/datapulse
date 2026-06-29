@@ -44,7 +44,7 @@ def summarize_data_quality(db: Session) -> DataQualitySummary:
         warning_checks=sum(check.status.lower() == "warning" for check in checks),
         total_failed_records=total_failed_records,
         total_records_checked=total_records_checked,
-        failure_rate=round(total_failed_records / total_records_checked, 4)
-        if total_records_checked
-        else 0.0,
+        failure_rate=(
+            round(total_failed_records / total_records_checked, 4) if total_records_checked else 0.0
+        ),
     )

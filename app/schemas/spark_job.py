@@ -16,6 +16,7 @@ class SparkJobBase(BaseModel):
     output_records: int = Field(default=0, ge=0)
     executor_count: int = Field(default=1, ge=1)
     memory_used_mb: int = Field(default=0, ge=0)
+    partitions: int = Field(default=1, ge=1)
     error_message: str | None = None
 
 
@@ -37,4 +38,5 @@ class SparkSummary(BaseModel):
     running_jobs: int
     total_input_records: int
     total_output_records: int
+    total_partitions: int
     average_duration_seconds: float

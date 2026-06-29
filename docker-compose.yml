@@ -9,6 +9,20 @@ services:
     volumes:
       - datapulse_sqlite:/data
 
+  datapulse-frontend:
+    image: node:22-alpine
+    container_name: datapulse-frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - datapulse-api
+
   postgres:
     image: postgres:16-alpine
     container_name: datapulse-postgres
@@ -22,6 +36,49 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  airflow:
+    image: apache/airflow:2.10.4
+    container_name: datapulse-airflow
+    profiles: ["airflow"]
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+    command: standalone
+    ports:
+      - "8080:8080"
+    volumes:
+      - airflow_data:/opt/airflow
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    container_name: datapulse-prometheus
+    profiles: ["observability"]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - datapulse-api
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: datapulse-grafana
+    profiles: ["observability"]
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+
 volumes:
   datapulse_sqlite:
   postgres_data:
+  airflow_data:
+  grafana_data:

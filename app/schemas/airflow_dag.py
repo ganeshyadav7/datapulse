@@ -14,6 +14,7 @@ class AirflowDagRunBase(BaseModel):
     end_time: datetime | None = None
     duration_seconds: float | None = Field(default=None, ge=0)
     failed_tasks: int = Field(default=0, ge=0)
+    retry_count: int = Field(default=0, ge=0)
     sla_miss: bool = False
 
 
@@ -35,4 +36,5 @@ class AirflowSummary(BaseModel):
     running_dag_runs: int
     sla_misses: int
     total_failed_tasks: int
+    total_retries: int
     average_duration_seconds: float

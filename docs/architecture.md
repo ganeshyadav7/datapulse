@@ -1,17 +1,19 @@
 # DataPulse Architecture
 
-DataPulse is organized around a simple layered backend architecture.
+DataPulse is organized as an enterprise-style observability control plane.
 
 ## Layers
 
-- `app/api/v1`: FastAPI routers and HTTP-specific behavior.
+- `app/api/v1`: FastAPI routers, auth, health checks, and metrics.
+- `app/core`: settings, structured logging, JWT helpers, middleware, and metrics.
 - `app/schemas`: Pydantic v2 request and response models.
 - `app/services`: business logic, summaries, and validation decisions.
 - `app/crud`: database persistence helpers.
 - `app/models`: SQLAlchemy ORM table mappings.
 - `app/db`: engine, session, and declarative base setup.
-- `app/core`: configuration, logging, and shared exceptions.
 - `app/utils`: time and sample data helpers.
+- `frontend`: React/Vite dashboard.
+- `grafana` and `prometheus`: observability stack provisioning.
 
 ## Request Flow
 
@@ -44,3 +46,12 @@ DataPulse monitors four common data engineering surfaces:
 - Airflow DAG run health, failed tasks, and SLA misses.
 - Spark job status, records, executors, and memory use.
 - Data quality checks with Great Expectations-style pass/fail semantics.
+
+## Security and Observability
+
+- JWT auth endpoints support Admin, Operator, and Viewer roles.
+- Existing APIs remain backward compatible when `AUTH_ENABLED=false`.
+- Request IDs and correlation IDs are emitted as response headers.
+- Logs are JSON-formatted for aggregation.
+- Security headers and CORS are configured centrally.
+- Prometheus-style metrics are exposed for Grafana dashboards.

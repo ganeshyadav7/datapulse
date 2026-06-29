@@ -16,7 +16,9 @@ def create_dag_run(db: Session, payload: AirflowDagRunCreate) -> AirflowDagRun:
 
 
 def list_dag_runs(db: Session, skip: int = 0, limit: int = 100) -> list[AirflowDagRun]:
-    statement = select(AirflowDagRun).order_by(AirflowDagRun.created_at.desc()).offset(skip).limit(limit)
+    statement = (
+        select(AirflowDagRun).order_by(AirflowDagRun.created_at.desc()).offset(skip).limit(limit)
+    )
     return list(db.scalars(statement).all())
 
 

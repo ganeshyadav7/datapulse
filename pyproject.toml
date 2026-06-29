@@ -24,13 +24,40 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest==8.3.4",
-  "httpx==0.28.1"
+  "pytest-cov==6.0.0",
+  "httpx==0.28.1",
+  "black==24.10.0",
+  "isort==5.13.2",
+  "flake8==7.1.1"
+]
+integrations = [
+  "pyspark>=3.5.0",
+  "great-expectations>=1.3.0"
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
 
+[tool.coverage.run]
+source = ["app"]
+omit = [
+  "app/services/airflow_integration.py",
+  "app/services/spark_integration.py"
+]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 100

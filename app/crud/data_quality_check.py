@@ -7,9 +7,7 @@ from app.models.data_quality_check import DataQualityCheck
 from app.schemas.data_quality_check import DataQualityCheckCreate
 
 
-def create_data_quality_check(
-    db: Session, payload: DataQualityCheckCreate
-) -> DataQualityCheck:
+def create_data_quality_check(db: Session, payload: DataQualityCheckCreate) -> DataQualityCheck:
     check = DataQualityCheck(**payload.model_dump())
     db.add(check)
     db.commit()

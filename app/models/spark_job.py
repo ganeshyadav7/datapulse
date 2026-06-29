@@ -25,6 +25,7 @@ class SparkJob(Base):
     output_records: Mapped[int] = mapped_column(Integer, default=0)
     executor_count: Mapped[int] = mapped_column(Integer, default=1)
     memory_used_mb: Mapped[int] = mapped_column(Integer, default=0)
+    partitions: Mapped[int] = mapped_column(Integer, default=1)
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False

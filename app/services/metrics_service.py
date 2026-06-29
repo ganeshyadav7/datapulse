@@ -2,11 +2,11 @@
 
 from sqlalchemy.orm import Session
 
+from app.schemas.metrics import MetricsOverview
 from app.services.airflow_service import summarize_airflow
 from app.services.data_quality_service import summarize_data_quality
 from app.services.pipeline_service import summarize_runs
 from app.services.spark_service import summarize_spark
-from app.schemas.metrics import MetricsOverview
 
 
 def get_metrics_overview(db: Session) -> MetricsOverview:
